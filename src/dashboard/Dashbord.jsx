@@ -3,8 +3,10 @@ import { IoShirtOutline } from "react-icons/io5";
 import Sales from './Sales';
 import { GiAmpleDress } from "react-icons/gi";
 import { ImMug } from "react-icons/im";
+import { Link } from 'react-router-dom';
+import { TbShirtFilled } from "react-icons/tb";
 
-const Dashbord = () => {
+const Dashbord = ({product,sales}) => {
     const [orders, setOrders] = useState([
         {
             order_id: '12345',
@@ -106,9 +108,9 @@ const Dashbord = () => {
     ]);
     return (
         <div className="">
-            <div className="grid grid-cols-4 gap-4 p-7">
+            {/* <div className="grid sm:grid-cols-4 gap-4 p-2 sm:p-7 ">
                 <div className="p-8 flex gap-2 border border-customGray rounded-lg bg-white">
-                    <IoShirtOutline size={50} />
+                    <TbShirtFilled size={50} />
                     <div className="font-semibold">
                         <p >500</p>
                         <p className="font-thin">Men</p>
@@ -135,50 +137,56 @@ const Dashbord = () => {
                         <p className="font-thin">Men</p>
                     </div>
                 </div>
-            </div>
-            <div>
-                <Sales />
+            </div> */}
+            <div className="m-2">
+                <Sales sales={sales} />
             </div>
 
-            <div className="flex p-6">
+            <div className="sm:flex sm:p-6">
 
-                <div className="border border-black bg-white rounded-xl drop-shadow-md w-2/3 table-auto m-2">
+                <div className="border border-black bg-white rounded-xl drop-shadow-md sm:w-2/3 table-auto m-2">
                     <div className="flex justify-between p-2">
                         <h1>Orders</h1>
                         <button id="button">
+                        <Link to="/order">
                             View All
+                            </Link>
                         </button>
                     </div>
                     <table className="w-full">
                         <thead className="border-y">
                             <tr>
                                 <th className=" px-4 py-2">S.no:</th>
-                                <th className=" px-4 py-2">Name</th>
-                                <th className=" px-4 py-2">Location</th>
-                                <th className=" px-4 py-2">Mobile number</th>
-                                <th className=" px-4 py-2">Order</th>
+                                <th className=" sm:px-4 sm:py-2">Name</th>
+                                <th className=" sm:px-4 sm:py-2">Location</th>
+                                <th className=" sm:px-4 sm:py-2">Mobile number</th>
+                                <th className=" sm:px-4 sm:py-2">Order</th>
                             </tr>
                         </thead>
                         <tbody className="text-center divide-y-2">
                             {orders.map((item, index) => (
                                 <tr key={item.order_id}>
-                                    <td className=" px-4 py-2">{index + 1}</td>
-                                    <td className=" px-4 py-2">{item.name}</td>
-                                    <td className=" px-4 py-2">{item.location.city}</td>
-                                    <td className=" px-4 py-2">{item.mobile_number}</td>
-                                    <td className=" px-4 py-2">{item.product}</td>
+                                    <td className=" sm:px-4 sm:py-2">{index + 1}</td>
+                                    <td className=" sm:px-4 sm:py-2">{item.name}</td>
+                                    <td className=" sm:px-4 sm:py-2">{item.location.city}</td>
+                                    <td className=" sm:px-4 sm:py-2">{item.mobile_number}</td>
+                                    <td className=" sm:px-4 sm:py-2">{item.product}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
 
-                <div className="border border-black bg-white rounded-xl drop-shadow-md w-1/3 table-auto m-2">
+                <div className="border border-black bg-white rounded-xl drop-shadow-md sm:w-1/3 table-auto m-2">
                 <div className="flex justify-between p-2">
-                        <h1>Orders</h1>
+                        <h1>Stocks</h1>
+                        <Link to="/stock">
                         <button id="button">
+                        <Link t0="/stock">
                             View All
+                            </Link>
                         </button>
+                        </Link>
                     </div>
                     <table className="w-full">
                         <thead className="border-y">
@@ -189,10 +197,10 @@ const Dashbord = () => {
                             </tr>
                         </thead>
                         <tbody className="text-center divide-y-2">
-                            {lowStockProducts.map((item) => (
+                            {product.slice(0,5).map((item) => (
                                 <tr key={item.product_id}>
                                     <td className=" px-4 py-2">{item.product_id}</td>
-                                    <td className=" px-4 py-2">{item.product}</td>
+                                    <td className=" px-4 py-2">{item.category}</td>
                                     <td className=" px-4 py-2">{item.stock}</td>
                                 </tr>
                             ))}

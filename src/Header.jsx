@@ -1,8 +1,9 @@
 import React from 'react'
 import { IoIosNotifications } from "react-icons/io";
 import  profile from "../image/profile.png";
+import { IoIosOptions } from "react-icons/io";
 
-const Header = () => {
+const Header = ({open,setOpen}) => {
     return (
         <div className="flex justify-between p-2 sm:p-8 items-center  bg-white">
             <div className="flex">
@@ -19,7 +20,13 @@ const Header = () => {
                     </div>
                 </div>
             </div>
+            <div className=" top-20 bg-slate-100 p-2 size-8 rounded-full sm:hidden">
+            <button onClick={()=>setOpen(!open)}>
+            <IoIosOptions />
+            </button>
+            </div>
         </div>
+
     )
 }
 

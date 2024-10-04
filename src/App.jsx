@@ -9,14 +9,25 @@ import Stock from './stocks/Stock';
 import Advertise from './advertise/Advertise';
 import Review from './review/Review';
 import api from './api/mainurl';
+import Editproduct from './product/Editproduct';
+import AdEdit from './advertise/AdEdit';
+import Order from './orders/Order';
+import Sales from './dashboard/Sales';
 
 const App = () => {
+  const [open,setOpen]=useState(true)
   const [product,setProduct]=useState([])
+  const [order,setOrder]=useState([])
+  const [sales,setSales]=useState([])
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        const responseorder = await api.get('/order');
         const response = await api.get('/product');
-        console.log(response.data);
+        const responsesales = await api.get('/sales');
+        console.log(sales);
+        setSales(responsesales.data);
+        setOrder(responseorder.data);
         setProduct(response.data);
       } catch (error) {
         console.log(error.response.data);
@@ -26,18 +37,22 @@ const App = () => {
   }, []);
   return (
     <div className="text-customGray">
-      <Header/>
+      <Header open={open} setOpen={setOpen}  />
       <Router>
-      <div className="grid grid-cols-6">
-        <NavBar/>
-        <div className="col-span-5 bg-slate-100">
+      <div className="sm:grid grid-cols-6">
+        <NavBar open={open} setOpen={setOpen}/>
+        <div className="sm:col-span-5 bg-slate-100">
           <Routes>
-            <Route path="/" element={<Dashbord/>} />
+            <Route path="/" element={<Dashbord product={product} sales={sales} />} />
+            <Route path="/sales" element={<Sales />} />
             <Route path="/allproduct" element={<AllProduct product={product} setProduct={setProduct}  />} />
             <Route path="/newproduct" element={<Newproduct/>} />
-            <Route path="/stock" element={<Stock/>} />
+            <Route path="/stock" element={<Stock product={product} setProduct={setProduct} />} />
             <Route path="/ad" element={<Advertise/>} />
             <Route path="review" element={<Review/>} />
+            <Route path="/allproduct/:id"  element={<Editproduct/>}/>
+            <Route path="adedit" element={<AdEdit/>} />
+            <Route path="/order" element={<Order product={order} setProduct={setProduct} />} />
           </Routes>
         </div>
       </div>

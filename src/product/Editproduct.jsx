@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'
 import api from '../api/mainurl';
+import { useLocation } from 'react-router';
 
-const Newproduct = () => {
-    const [file, setFile] = useState(null);
-    const [view,setView]=useState(null);
-    const [newitem, setNewitem] = useState({
-        name: '',
-        design: '',
-        price: '',
-        stock: '',
-        category: '',
-        description: ''
-    });
+const Editproduct = () => {
+    const location = useLocation();
+    const { product_id, name, price, description, design, category, stock,product_src } = location.state || { product_id: "", name: "", price: "", description: "", design: "", category: "", stock: "" ,product_src:"" };
+    const [newitem, setNewitem] = useState({product_id, name, price, description, design, category, stock });
+    const [file,setFile]=useState(null)
+    const [view,setView]=useState(null)
+    useEffect(() => {
+        console.log(newitem);
+    }, [newitem]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { value, name } = e.target;
         setNewitem(prev => ({ ...prev, [name]: value }));
-    };
-
+    }
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         console.log(file)
@@ -35,26 +33,24 @@ const Newproduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('file', file);
+        if (file) {
+            formData.append('file', file);
+            console.log(file)
+        } else{
+            formData.append('product_src', product_src);
+        }
         formData.append('name', newitem.name);
         formData.append('design', newitem.design);
         formData.append('price', newitem.price);
         formData.append('stock', newitem.stock);
         formData.append('category', newitem.category);
         formData.append('description', newitem.description);
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
-
+        formData.append('product_id', newitem.product_id);
         try {
-            const response = await api.post('/product', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            console.log('Product added successfully', response.data);
+            const response = await api.put("/product", formData);
+            console.log("Product updated successfully", response.data);
         } catch (error) {
-            console.error('Error in adding new product', error);
+            console.error("Error in adding new product", error);
         }
     };
 
@@ -63,23 +59,17 @@ const Newproduct = () => {
             <form onSubmit={handleSubmit} className="bg-white">
                 <div className="grid p-8 gap-2">
                     <label htmlFor="category">Category</label>
-                    <input className="border border-customGray rounded-lg w-48" type="text" name="category" id="category" onChange={handleChange} />
+                    <input className="border border-customGray rounded-lg w-48" type="text" name="category" id="category" value={newitem.category} onChange={handleChange} />
                     <label htmlFor="name">Product Name</label>
-                    <input className="border border-customGray rounded-lg w-48" type="text" name="name" id="name" onChange={handleChange} />
+                    <input className="border border-customGray rounded-lg w-48" type="text" name="name" id="name" value={newitem.name} onChange={handleChange} />
                     <label htmlFor="design">Product Design</label>
-                    <input className="border border-customGray rounded-lg w-48" type="text" name="design" id="design" onChange={handleChange} />
+                    <input className="border border-customGray rounded-lg w-48" type="text" name="design" id="design" value={newitem.design} onChange={handleChange} />
                     <label htmlFor="price">Price</label>
-                    <input className="border border-customGray rounded-lg w-48" type="number" name="price" id="price" onChange={handleChange} />
+                    <input className="border border-customGray rounded-lg w-48" type="number" name="price" id="price" value={newitem.price} onChange={handleChange} />
                     <label htmlFor="description">Description</label>
-                    <textarea className="border border-customGray rounded-lg w-1/2" name="description" id="description" cols="30" rows="5" onChange={handleChange}></textarea>
+                    <textarea className="border border-customGray rounded-lg w-1/2" name="description" id="description" cols="30" rows="5" value={newitem.description} onChange={handleChange}></textarea>
                 </div>
-                <div className="flex p-8 gap-4">
-                    <div>
-                        <p>Stock</p>
-                        <input className="border border-customGray rounded-lg" type="number" name="stock" id="stock" onChange={handleChange} />
-                    </div>
-                    <div className="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-lg p-4">
-            {file ? (
+                {file ? (
                 <>
                     <img src={view} alt="Uploaded" className="size-24" />
                     <label htmlFor="file-upload" className="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg">
@@ -96,12 +86,10 @@ const Newproduct = () => {
             )}
             <input id="file-upload" type="file" name=
             "file" onChange={handleFileChange} className="hidden" />
-        </div>
-                </div>
                 <button id="button" type="submit">Continue</button>
             </form>
         </div>
-    );
-};
+    )
+}
 
-export default Newproduct;
+export default Editproduct;

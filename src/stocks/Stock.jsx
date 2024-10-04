@@ -1,96 +1,23 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 
-function Stock() {
-    const [product, setProduct] = useState([
-        {
-            product_id: "1",
-            created: "2024-07-18",
-            category: "Electronics",
-            product: "Laptop",
-            price: "1200",
-            status: "In stock"
-        },
-        {
-            product_id: "2",
-            created: "2024-07-17",
-            category: "Clothing",
-            product: "T-shirt",
-            price: "25",
-            status: "Out of stock"
-        },
-        {
-            product_id: "3",
-            created: "2024-07-16",
-            category: "Books",
-            product: "Novel",
-            price: "15",
-            status: "In stock"
-        },
-        {
-            product_id: "4",
-            created: "2024-07-15",
-            category: "Electronics",
-            product: "Smartphone",
-            price: "800",
-            status: "In stock"
-        },
-        {
-            product_id: "5",
-            created: "2024-07-14",
-            category: "Furniture",
-            product: "Chair",
-            price: "150",
-            status: "Out of stock"
-        },
-        {
-            product_id: "6",
-            created: "2024-07-13",
-            category: "Electronics",
-            product: "Headphones",
-            price: "50",
-            status: "In stock"
-        },
-        {
-            product_id: "7",
-            created: "2024-07-12",
-            category: "Food",
-            product: "Chocolate",
-            price: "5",
-            status: "In stock"
-        },
-        {
-            product_id: "8",
-            created: "2024-07-11",
-            category: "Clothing",
-            product: "Jeans",
-            price: "40",
-            status: "Out of stock"
-        },
-        {
-            product_id: "9",
-            created: "2024-07-10",
-            category: "Books",
-            product: "Textbook",
-            price: "80",
-            status: "In stock"
-        },
-        {
-            product_id: "10",
-            created: "2024-07-09",
-            category: "Electronics",
-            product: "Tablet",
-            price: "300",
-            status: "Out of stock"
-        }
-    ]);
+function Stock({product,setProduct}) {
+    const [query,setQuery]=useState("")
+
+    const handlequery=(data)=>{
+        return (data.filter(item=>item.category.toLowerCase().includes(query) ||item.name.toLowerCase().includes(query)))
+    }
+    
+    const formatedDate=(timestamp)=>{
+        return new Date(timestamp).toISOString().split('T')[0];
+    }
     return (
         <div>
             <div className="p-4 space-y-4">
             <div className="flex justify-between  ">
                 <h1 className="font-bold">Stock Details</h1>
                 <div className="flex gap-4">
-                    <input type="text" className="border border-customGray rounded-xl"/>
+                    <input type="text" className="border border-customGray rounded-xl" onChange={(e)=>setQuery(e.target.value)}/>
                     <Link to="/newproduct">
                     <button id="button">+New Stock</button>
                     </Link>
@@ -119,14 +46,14 @@ function Stock() {
                 </thead>
                 
                 <tbody className="divide-y-2 ">
-                {product.map(item=>(
-                    <tr>
+                {handlequery(product).map(item=>(
+                    <tr key={item.product_id} >
                         <td>{item.product_id}</td>
                         <td>{item.product_id}</td>
                         <td>{item.category}</td>
-                        <td>{item.product}</td>
-                        <td>{item.created}</td>
-                        <td>{item.price}</td>
+                        <td>{item.name}</td>
+                        <td>{formatedDate(item.created_at)}</td>
+                        <td>{item.stock}</td>
                         <td className="text-red-400">edit</td>
                     </tr>
                 ))}
