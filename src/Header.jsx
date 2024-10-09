@@ -9,7 +9,7 @@ const Header = ({open,setOpen}) => {
             <div className="flex">
                 <h1 className="text-2xl sm:text-4xl font-bold" >.cloths</h1>
             </div>
-            <input type="text" className="border-2 rounded-xl w-28 sm:basis-1/3" placeholder="Search"/>
+            {/* <input type="text" className="border-2 rounded-xl w-28 sm:basis-1/3" placeholder="Search"/> */}
             <div className="flex items-center divide-x-2 gap-4 ">
                 <IoIosNotifications className="text-2xl" />
                 <div className="flex">
