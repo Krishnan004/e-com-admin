@@ -38,6 +38,32 @@ const App = () => {
         console.log(error.response.data);
       }
     }
+    const handleAuth = async () => {
+      console.log("checking auth")
+      try {
+          const token = localStorage.getItem('token');
+
+          if (!token) {
+              throw new Error('Token not found');
+          }
+
+          const config = {
+              headers: {
+                  Authorization: `Bearer ${token}`
+              }
+          };
+
+          const
+              res = await api.get('/checkauth', config);
+          setAuth(true);
+          console.log(res.data); // Assuming the API returns user data
+      } catch (error) {
+          console.error(error);
+          // Handle error appropriately, e.g., redirect to login, show error message
+          return null; // Or throw a custom error
+      }
+  };
+  handleAuth();
     fetchProduct();
   }, []);
   return (
