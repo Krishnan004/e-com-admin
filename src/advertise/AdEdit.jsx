@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import api from '../api/mainurl';
 import { useLocation } from 'react-router';
 
-const AdEdit = () => {
+const AdEdit = ({auth,setNotify}) => {
     const [file, setFile] = useState(null);
     const [view,setView]=useState(null);
     const location = useLocation();
@@ -35,7 +35,7 @@ const AdEdit = () => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+        if(auth){
         const formData = new FormData();
         formData.append('file', file);
         formData.append('product_name', newitem.product_name || product.product_name);
@@ -61,6 +61,9 @@ const AdEdit = () => {
             } else {
                 console.error('Error message:', error.message);
             }
+        }}
+        else{
+            setNotify(true);
         }
     };
     

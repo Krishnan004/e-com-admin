@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import api from '../api/mainurl';
 import { useLocation } from 'react-router';
 
-const Editproduct = () => {
+const Editproduct = ({auth,setAuth,notify,setNotify}) => {
     const location = useLocation();
     const { product_id, name, price, description, design, category, stock,product_src } = location.state || { product_id: "", name: "", price: "", description: "", design: "", category: "", stock: "" ,product_src:"" };
     const [newitem, setNewitem] = useState({product_id, name, price, description, design, category, stock });
@@ -33,6 +33,7 @@ const Editproduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
+        if(auth){
         if (file) {
             formData.append('file', file);
             console.log(file)
@@ -51,6 +52,9 @@ const Editproduct = () => {
             console.log("Product updated successfully", response.data);
         } catch (error) {
             console.error("Error in adding new product", error);
+        }}
+        else{
+            setNotify(true);
         }
     };
 

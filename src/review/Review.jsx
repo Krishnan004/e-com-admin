@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import api from '../api/mainurl';
 
-function Review() {
+function Review({auth,setNotify}) {
     const [review, setReview] = useState([]);
     
     const formatDate = (timestamp) => {
@@ -36,6 +36,7 @@ function Review() {
     }, [fetchData]);
 
     const handleApproval = async (approval, review_id) => {
+        if(auth){
         try {
             const response = await api.put("/review", { approval, review_id });
             console.log(response);
@@ -47,6 +48,9 @@ function Review() {
             );
         } catch (error) {
             console.log(error);
+        }}
+        else{
+            setNotify(true);
         }
     };
 

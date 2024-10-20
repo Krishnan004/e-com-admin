@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import api from '../api/mainurl';
 
-const Newproduct = () => {
+const Newproduct = ({notify,setNotify,auth,setAuth}) => {
     const [file, setFile] = useState(null);
     const [view,setView]=useState(null);
     const [newitem, setNewitem] = useState({
@@ -34,6 +34,7 @@ const Newproduct = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(auth){
         const formData = new FormData();
         formData.append('file', file);
         formData.append('name', newitem.name);
@@ -55,6 +56,9 @@ const Newproduct = () => {
             console.log('Product added successfully', response.data);
         } catch (error) {
             console.error('Error in adding new product', error);
+        }}
+        else{
+            setNotify(true);
         }
     };
 

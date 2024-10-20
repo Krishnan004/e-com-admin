@@ -13,12 +13,17 @@ import Editproduct from './product/Editproduct';
 import AdEdit from './advertise/AdEdit';
 import Order from './orders/Order';
 import Sales from './dashboard/Sales';
+import Login from './Login';
+import Notify from './Notify';
 
 const App = () => {
   const [open,setOpen]=useState(true)
   const [product,setProduct]=useState([])
   const [order,setOrder]=useState([])
   const [sales,setSales]=useState([])
+  const [auth,setAuth]=useState(false);
+  const[notify,setNotify]=useState(true);
+  
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -37,22 +42,24 @@ const App = () => {
   }, []);
   return (
     <div className="text-customGray">
-      <Header open={open} setOpen={setOpen}  />
-      <Router>
+     <Router>
+      <Header open={open} setOpen={setOpen}  auth={auth} setAuth={setAuth} />
+      <Notify notify={notify} setNotify={setNotify} />
       <div className="sm:grid grid-cols-6">
         <NavBar open={open} setOpen={setOpen}/>
-        <div className="sm:col-span-5 bg-slate-100">
+        <div className="sm:col-span-5 bg-slate-100 h-screen">
           <Routes>
             <Route path="/" element={<Dashbord product={product} sales={sales} />} />
             <Route path="/sales" element={<Sales />} />
             <Route path="/allproduct" element={<AllProduct product={product} setProduct={setProduct}  />} />
-            <Route path="/newproduct" element={<Newproduct/>} />
+            <Route path="/newproduct" element={<Newproduct notify={notify} setNotify={setNotify} auth={auth} setAuth={setAuth} />} />
             <Route path="/stock" element={<Stock product={product} setProduct={setProduct} />} />
             <Route path="/ad" element={<Advertise/>} />
-            <Route path="review" element={<Review/>} />
-            <Route path="/allproduct/:id"  element={<Editproduct/>}/>
-            <Route path="adedit" element={<AdEdit/>} />
+            <Route path="review" element={<Review notify={notify} setNotify={setNotify} auth={auth} setAuth={setAuth} />} />
+            <Route path="/allproduct/:id"  element={<Editproduct notify={notify} setNotify={setNotify} auth={auth} setAuth={setAuth} />}/>
+            <Route path="adedit" element={<AdEdit notify={notify} setNotify={setNotify} auth={auth} setAuth={setAuth} />} />
             <Route path="/order" element={<Order product={order} setProduct={setProduct} />} />
+            <Route path="/login" element={<Login auth={auth} setAuth={setAuth} />}/>
           </Routes>
         </div>
       </div>
