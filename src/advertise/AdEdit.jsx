@@ -33,6 +33,8 @@ const AdEdit = ({auth,setNotify}) => {
         }
         
     };
+
+    // update the data edited in specific product
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(auth){

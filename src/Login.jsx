@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import api from './api/mainurl';
 
-const Login = ({auth,setAuth}) => {
+const Login = ({auth,setAuth,setNotify}) => {
     const [values, setValues] = useState({ email: '', password: '' });
     const [error, setError] = useState(false);
     const [user_id, setUser_id] = useState(null);
@@ -26,6 +26,7 @@ const Login = ({auth,setAuth}) => {
                 const responsecart = await api.get('/cart', { params: { user_id: res.user_id } });
                 setCartItem(responsecart.data);
                 setAuth(true);
+                setNotify(false);
                 console.log(res);
             } else {
                 throw new Error("Invalid user response");

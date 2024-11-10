@@ -30,6 +30,7 @@ const Editproduct = ({auth,setAuth,notify,setNotify}) => {
         
     };
 
+    // update the data edited in specific product
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();

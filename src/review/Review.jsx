@@ -35,6 +35,8 @@ function Review({auth,setNotify}) {
         fetchData();
     }, [fetchData]);
 
+
+    // review approval 
     const handleApproval = async (approval, review_id) => {
         if(auth){
         try {

@@ -32,6 +32,7 @@ const Newproduct = ({notify,setNotify,auth,setAuth}) => {
         
     };
 
+    // Add new Product
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(auth){

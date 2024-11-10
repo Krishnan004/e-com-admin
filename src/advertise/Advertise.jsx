@@ -5,6 +5,8 @@ import api from '../api/mainurl';
 
 function Advertise() {
     const [product,setProduct]=useState([])
+
+    // fetch advertisement product (product display in homePage)
     useEffect(()=>{
         const fetchData=async ()=>{
             const response=await api.get("/homeproduct")

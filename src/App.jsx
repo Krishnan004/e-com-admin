@@ -25,6 +25,7 @@ const App = () => {
   const[notify,setNotify]=useState(true);
   
   useEffect(() => {
+    // fetch allProduct,orderSection,sales
     const fetchProduct = async () => {
       try {
         const responseorder = await api.get('/order');
@@ -38,6 +39,8 @@ const App = () => {
         console.log(error.response.data);
       }
     }
+
+    // verify authentication using stored token in localstorage
     const handleAuth = async () => {
       console.log("checking auth")
       try {
@@ -55,6 +58,7 @@ const App = () => {
 
           const
               res = await api.get('/checkauth', config);
+              setNotify(false)
           setAuth(true);
           console.log(res.data); // Assuming the API returns user data
       } catch (error) {
@@ -63,7 +67,7 @@ const App = () => {
           return null; // Or throw a custom error
       }
   };
-  handleAuth();
+    handleAuth();
     fetchProduct();
   }, []);
   return (
@@ -85,7 +89,7 @@ const App = () => {
             <Route path="/allproduct/:id"  element={<Editproduct notify={notify} setNotify={setNotify} auth={auth} setAuth={setAuth} />}/>
             <Route path="adedit" element={<AdEdit notify={notify} setNotify={setNotify} auth={auth} setAuth={setAuth} />} />
             <Route path="/order" element={<Order product={order} setProduct={setProduct} />} />
-            <Route path="/login" element={<Login auth={auth} setAuth={setAuth} />}/>
+            <Route path="/login" element={<Login auth={auth} setAuth={setAuth} setNotify={setNotify}/>}/>
           </Routes>
         </div>
       </div>
